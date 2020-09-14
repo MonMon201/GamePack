@@ -1,0 +1,50 @@
+CREATE DATABASE Users;
+
+CREATE DATABASE Store;
+
+CREATE TABLE `USERS`.`UsersData` (
+		id INT AUTO_INCREMENT,
+		fullname VARCHAR(30) NOT NULL,
+		email VARCHAR(30) NOT NULL,
+		phone VARCHAR(12) NOT NULL,
+		regDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+		storeId INT DEFAULT 1,
+		PRIMARY KEY(id)
+);
+
+CREATE TABLE `STORE`.`goods` (
+		id INT AUTO_INCREMENT,
+		name VARCHAR(30) NOT NULL,
+		tag VARCHAR(30) NOT NULL,
+		background VARCHAR(100) NOT NULL,
+		price Decimal (6,2) NOT NULL,
+		discount DECIMAL (5, 2) DEFAULT 0,
+		cover VARCHAR(100) NOT NULL,
+		goodsDescription VARCHAR(4000) NOT NULL,
+		goodsSystemReq VARCHAR(4000) NOT NULL,
+		PRIMARY KEY(id)
+);
+
+CREATE TABLE `STORE`.`orders` (
+		id INT AUTO_INCREMENT,
+		userId INT NOT NULL,
+		email VARCHAR(30) NOT NULL,
+		orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+		numberOfOrder INT NOT NULL,
+		PRIMARY KEY(id),
+		FOREIGN KEY(userId)
+			REFERENCES users.usersData(id)
+			ON DELETE CASCADE
+);
+
+CREATE TABLE `STORE`.`cart` (
+		orderID INT NOT NULL,
+		numberOfOrder INT NOT NULL,
+		amount INT DEFAULT 1,
+		goodsId INT NOT NULL,
+		FOREIGN KEY(orderID) REFERENCES orders(id)
+			ON DELETE CASCADE,
+		FOREIGN KEY(goodsId) REFERENCES goods(id)
+			ON DELETE CASCADE
+);
+
